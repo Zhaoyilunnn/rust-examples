@@ -208,12 +208,12 @@ fn failed_borrow<'a>() {
 //     }
 // }
 
-static z: &str = "hello";
+static Z: &str = "hello";
 
 // compiler will not assume the lifetime of the return value
 // thus it will not compile without `'static`
 fn longer_string_test(x: &str, y: &str) -> &'static str {
-    z
+    Z
 }
 
 fn longer_string<'a>(x: &'a str, y: &'a str) -> &'a str {
@@ -222,6 +222,11 @@ fn longer_string<'a>(x: &'a str, y: &'a str) -> &'a str {
     } else {
         y
     }
+}
+
+fn return_value(x: &str, y: &str) -> String {
+    let z = String::from("hello");
+    z
 }
 
 // lifetimes
@@ -247,6 +252,8 @@ fn test_lifetimes() {
     println!("The longer string is {}", result);
 
     longer_string_test(s1.as_str(), s2);
+
+    return_value(s1.as_str(), s2);
 }
 
 fn main() {
