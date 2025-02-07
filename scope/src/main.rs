@@ -192,10 +192,68 @@ fn partial_move_test() {
     // TODO: Try uncommenting above line
 }
 
+// failed_borrow
+fn failed_borrow<'a>() {
+    let _x = 12;
+    // let y: &'a i32 = &_x;
+    // error[E0597]: `x` does not live long enough
+}
+
+// ERROR
+// fn compare_two_strings(x: &str, y: &str) -> &str {
+//     if x.len() > y.len() {
+//         x
+//     } else {
+//         y
+//     }
+// }
+
+static z: &str = "hello";
+
+// compiler will not assume the lifetime of the return value
+// thus it will not compile without `'static`
+fn longer_string_test(x: &str, y: &str) -> &'static str {
+    z
+}
+
+fn longer_string<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+// lifetimes
+fn test_lifetimes() {
+    println!("Test lifetimes");
+    let i = 3; // lifetime for `i` starts. It ends at the end of the block
+    {
+        let r = &i; // `r` lifetime starts. It ends at the end of the block
+        println!("r: {}", r);
+    } // `r` goes out of scope
+
+    {
+        let r = &i; // `r` lifetime starts. It ends at the end of the block
+        println!("r: {}", r);
+    }
+
+    failed_borrow();
+
+    println!("Test lifetimes compare two strings' length");
+    let s1 = String::from("abcd");
+    let s2 = "xyz";
+    let result = longer_string(s1.as_str(), s2);
+    println!("The longer string is {}", result);
+
+    longer_string_test(s1.as_str(), s2);
+}
+
 fn main() {
     box_test();
     drop_test();
     ownership_and_moves_test();
     mutability_test();
     partial_move_test();
+    test_lifetimes()
 }
