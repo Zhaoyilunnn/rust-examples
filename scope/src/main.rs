@@ -1,3 +1,7 @@
+// Some summary
+//   If variable is allocated on stack, by default <copy>
+//   If allocated on heap, by default <move>
+
 use std::mem;
 
 #[allow(dead_code)]
