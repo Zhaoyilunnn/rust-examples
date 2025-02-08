@@ -224,6 +224,10 @@ fn longer_string<'a>(x: &'a str, y: &'a str) -> &'a str {
     }
 }
 
+// fn is_longer(x: &str, y: &str) -> bool {
+//     x.len() > y.len()
+// }
+
 fn return_value(x: &str, y: &str) -> String {
     let z = String::from("hello");
     z
